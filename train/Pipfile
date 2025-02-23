@@ -9,8 +9,12 @@ verify_ssl = true
 name = "pytorch"
 
 [packages]
-torch = {version = "==2.6.0+rocm6.2.4", index = "pytorch"}
 ultralytics = "==8.3.78"
+pytorch-triton-rocm = {version = "*", index = "pytorch"}
+torchvision = {version = "*", index = "pytorch"}
+torch = {version = "==2.6.0", index = "pytorch"}
+tqdm = {version = "*", index = "pytorch"}
+numpy = {version = "*", index = "pytorch"}
 
 [dev-packages]
 
