@@ -1,0 +1,20 @@
+{
+  "settings_version": "0.0.6",
+  "datasets_dir": "../dataset",
+  "weights_dir": "weights",
+  "runs_dir": "runs",
+  "uuid": "6a3fe255a6ac440c1c42ecf84b386d4feb206b5deaeebe02abb42113f335952b",
+  "sync": true,
+  "api_key": "",
+  "openai_api_key": "",
+  "clearml": true,
+  "comet": true,
+  "dvc": true,
+  "hub": true,
+  "mlflow": true,
+  "neptune": true,
+  "raytune": true,
+  "tensorboard": true,
+  "wandb": false,
+  "vscode_msg": true
+}
