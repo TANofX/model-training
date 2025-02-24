@@ -1,12 +1,13 @@
 # Training object detection models to run on an Orange Pi 5 Plus
 
 Instructions for training object detection models on an amd64 computer with an AMD GPU that supports ROCM,
-producing a model that will run on a device with a Rockchip RK3588 ARM SoC with an NPU.
+producing a model that will run in PhotonVision on a device with a Rockchip RK3588 ARM SoC with an NPU.
 
 Tested training a computer with an AMD Radeon RX 6600XT, using Debian Bookworm.
 
-Tested running the model on an Orange Pi 5 Plus, using the official Debian image
-([link here](http://www.orangepi.org/html/hardWare/computerAndMicrocontrollers/service-and-support/Orange-Pi-5-plus.html)).
+Model training done on a amd64 computer with an AMD GPU that supports ROCM.
+
+Tested running the model on an Orange Pi 5 Plus, using the official Debian image.
 
 ## Notes
 
@@ -56,22 +57,51 @@ Tested running the model on an Orange Pi 5 Plus, using the official Debian image
     3. `pipenv run python3 run.py`
         * On Wayland, you may need to run `pipenv run env QT_QPA_PLATFORM=xcb python3 run.py`
         * In `run.py`, `source=0` means use the first camera. Change `0` to use a different camera.
-6. export to RKNN
+6. export to RKNN without quantization
+    (This will *not* run in PhotonVision. Skip to step 8 if you want to use PhotonVision.)
     1. `pushd export-rknn`
-    2. `pipenv install`
+    2. `pipenv sync`
     3. `pipenv run yolo export model=../best.pt format=rknn name=rk3588`
     4. `mv best-rk3588.rknn best_rknn_model/`
     5. `mv best_rknn_model ../run-rknn/`
-    5. `popd`
-7. run on RKNN device (e.g.: Orange Pi 5 Plus)
+    6. `popd`
+7. run non-quantized on RKNN device (e.g.: Orange Pi 5 Plus)
     1. http://www.orangepi.org/html/hardWare/computerAndMicrocontrollers/service-and-support/Orange-Pi-5-plus.html
     2. `pushd run-rknn`
     3. `sudo cp librknnrt.so /usr/lib/` (only do this one time per Orange Pi)
         * `librknnrt.so` is from https://github.com/airockchip/rknn-toolkit2/blob/master/rknpu2/runtime/Linux/librknn_api/aarch64/librknnrt.so
     4. `pipenv run yolo predict model=../export-rknn/best_rknn_model source=0`
+8. Export to RKNN with quantization so it can run in Photonvision.
+    1. Export to modified ONNX (This step relies on a fork of ultralytics, and does not have a version lock file, so this may break in the future. Good luck!)
+        1. `pushd export-onnx`
+        2. `virtualenv venv`
+        3. `source venv bin activate` (This might be different if you do not use bash.)
+        4. `git clone https://github.com/airockchip/ultralytics_yolov8 ultralytics`
+            * This is the fork of ultralytics. We will at least go to a known working commit.
+            * We should probably use a git submodule for this.
+        5. `pushd ultralytics`
+        6. `git checkout 4674fe6e` (`origin/main` at time of writing)
+        7. `pip install -e .`
+            * This is probably not 100% reproducible.
+        8. `popd ..`
+        9. `pip install onnx==1.17.0`
+        10. `yolo mode=export format=rknn model=../best.pt`
+            * This has `format=rknn` even though it is creating ONNX. See the ulralytics fork diff for details.
+            * Should have generated `../best.onnx`
+        11. `deactivate`
+        12. `popd`
+    2. Convert ONNX to RKNN with quantization
+        1. `pushd onnx-to-rknn`
+        2. `./gen-quant-images-txt.sh`
+        3. `pipenv sync`
+        4. `pipenv run python3 convert.py`
 
 ## References
 
 * https://docs.ultralytics.com/integrations/rockchip-rknn/
 * https://docs.ultralytics.com/quickstart/
 * https://rocm.docs.amd.com/projects/radeon/en/latest/docs/install/wsl/install-pytorch.html
+
+## Thanks
+
+* Thanks to [Sam Freund](https://github.com/samfreund) for help on the PhotonVision Discord.

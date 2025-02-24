@@ -1,5 +1,5 @@
 dataset/
-best.pt
-best.oknn
-best.onnx
+*.pt
+*.onnx
+*.rknn
 best_rknn_model/

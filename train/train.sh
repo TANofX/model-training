@@ -11,7 +11,7 @@ rm -rf output
 set -ex
 yolo detect train \
 	data=../dataset/data.yaml \
-	model=yolo11n.yaml \
+	model=yolov8n.yaml \
 	project=output \
 	epochs=10 \
 	imgsz=640
