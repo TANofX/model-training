@@ -7,6 +7,14 @@ Tested training a computer with an AMD Radeon RX 6600XT, using Debian Bookworm.
 
 Tested running the model on an Orange Pi 5 Plus, using the image from PhotonVision.
 
+This project is still undergoing rapid development. Things that will hopefully change soon:
+
+* More configuration of training parameters in `config.kdl`
+* Customize name of model instead of using `best`.
+* Completely stop using `pipenv`.
+* Instructions for creating a model in Roboflow.
+* Instructions for using a model not from Roboflow.
+
 ## Instructions
 
 1. Create a model in Roboflow
