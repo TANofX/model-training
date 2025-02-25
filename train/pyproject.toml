@@ -1,0 +1,31 @@
+[project]
+name = "train"
+version = "0.0.1"
+description = "train model"
+requires-python = ">=3.11"
+dependencies = [
+	"ultralytics==8.3.78",
+	"torch==2.6.0+rocm6.2.4",
+	"torchvision",
+	"pytorch-triton-rocm",
+	"tqdm",
+	"numpy"
+]
+
+[tool.uv.sources]
+torch = {index = "pytorch"}
+torchvision = {index = "pytorch"}
+pytorch-triton-rocm = {index = "pytorch"}
+numpy = {index = "pytorch"}
+tqdm = {index = "pytorch"}
+
+[[tool.uv.index]]
+name = "pytorch"
+url = "https://download.pytorch.org/whl/rocm6.2.4"
+default = false
+explicit = true
+
+[[tool.uv.index]]
+name = "pypi"
+url = "https://pypi.org/simple"
+default = true

@@ -1,0 +1,6 @@
+*
+!verify-rocm
+!download-dataset
+!train
+!onnx-to-rknn
+!run.sh

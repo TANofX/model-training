@@ -1,0 +1,12 @@
+[project]
+name = "onnx-to-rknn"
+version = "0.0.1"
+description = "convert onnx model to rknn"
+requires-python = ">=3.11"
+dependencies = [
+	"ultralytics==8.3.78",
+	"onnx==1.14.1",
+	"rknn-toolkit2==2.3.0",
+	"torch==2.2.0",
+	"setuptools"
+]

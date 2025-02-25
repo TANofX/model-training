@@ -1,0 +1,10 @@
+[project]
+name = "download-dataset"
+version = "0.0.1"
+description = "Download dataset from Roboflow"
+requires-python = ">=3.11"
+dependencies = [
+	"roboflow",
+	"kdl-py",
+	"pyyaml"
+]
