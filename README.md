@@ -25,7 +25,7 @@ This project is still undergoing rapid development. Things that will hopefully c
         1. Install `amdgpu` per https://rocm.docs.amd.com/projects/install-on-linux/en/latest/install/amdgpu-install.html
             * For `amdgpu-install`'s `--usecase` argument, include at least `hiplibsdk` and `rocm`.
         2. reboot
-3. Build the docker image
+3. Build the docker image. Warning: the docker image will be 50+ GB.
     1. `docker build . -t model-training`
 4. Run the docker image.
     1. Create a configuration file:
