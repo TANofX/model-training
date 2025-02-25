@@ -106,7 +106,7 @@ hard to make that reproducible.
     1. Export to modified ONNX (This step relies on a fork of ultralytics, and does not have a version lock file, so this may break in the future. Good luck!)
         1. `pushd export-onnx`
         2. `virtualenv venv`
-        3. `source venv bin activate` (This might be different if you do not use bash.)
+        3. `source venv/bin/activate` (This might be different if you do not use bash.)
         4. `git clone https://github.com/airockchip/ultralytics_yolov8 ultralytics`
             * This is the fork of ultralytics. We will at least go to a known working commit.
             * We should probably use a git submodule for this.
@@ -118,7 +118,7 @@ hard to make that reproducible.
         9. `pip install onnx==1.17.0`
         10. `yolo mode=export format=rknn model=../best.pt`
             * This has `format=rknn` even though it is creating ONNX. See the ulralytics fork diff for details.
-            * Should have generated `../best.onnx`
+            * Should have generated `../../best.onnx`
         11. `deactivate`
         12. `popd`
     2. Convert ONNX to RKNN with quantization
@@ -126,6 +126,7 @@ hard to make that reproducible.
         2. `./gen-quant-images-txt.sh`
         3. `pipenv sync`
         4. `pipenv run python3 convert.py`
+            * Should have generated `../best-640-640-yolov8n.rknn`
 
 ## References
 
