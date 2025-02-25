@@ -27,12 +27,13 @@ This project is still undergoing rapid development. Things that will hopefully c
         2. reboot
 3. Build the docker image
     1. `docker build . -t model-training`
-4. Run the docker image. Each run of this step uses a fresh environment,
-   so make a new model, update `config.kdl` (step #), and run this step again.
+4. Run the docker image.
     1. Create a configuration file:
         1. `cp download-dataset/config.kdl.example config.kdl`
         2. Edit `config.kdl` and set your configuration.
     2. `./run-in-docker.sh`
+        * Each run of this step uses a fresh environment, so make a new model,
+          update `config.kdl`, and run this step again.
 5. Upload model to PhotonVision
     * `output/output/best-640-640-yolov8n.rknn`
     * `best-640-640-yolov8n-labels.txt`
