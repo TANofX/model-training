@@ -1,5 +1,6 @@
 #!/bin/bash
 set -ex
+
 pushd verify-rocm
 uv run verify-rocm.py
 popd
@@ -22,3 +23,6 @@ popd
 pushd onnx-to-rknn
 ./gen-quant-images-txt.sh
 uv run convert.py
+popd
+
+cp best-640-640-yolov8n.rknn /output/

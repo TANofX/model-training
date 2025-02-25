@@ -5,26 +5,48 @@ producing a model that will run in PhotonVision on a device with a Rockchip RK35
 
 Tested training a computer with an AMD Radeon RX 6600XT, using Debian Bookworm.
 
-Model training done on a amd64 computer with an AMD GPU that supports ROCM.
-
-Tested running the model on an Orange Pi 5 Plus, using the official Debian image.
-
-## Notes
-
-* Pipenv has bugs regarding resolving dependencies from multiple sources, and pytorch has issues with version
-  compatibilities. When installing anything alongside torch that exists in http://download.pytorch.org/whl/rocm6.2.4,
-  specify it to come from that source. E.g.: `train/Pipfile` gets `tqdm` and `numpy` from `pytorch`.
-* Different steps require different transitive dependencies, so each step that uses Python has its own `Pipfile`.
-  Trying to do this in a Jupyter Notebook would be a disaster of version conflicts.
+Tested running the model on an Orange Pi 5 Plus, using the image from PhotonVision.
 
 ## Instructions
 
 1. Create a model in Roboflow
     1. TODO
 2. Set up computer to train model
+    1. Install Docker.
+    2. Enable ROCM (for AMD GPUs)
+        1. Install `amdgpu` per https://rocm.docs.amd.com/projects/install-on-linux/en/latest/install/amdgpu-install.html
+            * For `amdgpu-install`'s `--usecase` argument, include at least `hiplibsdk` and `rocm`.
+        2. reboot
+3. Build the docker image
+    1. `docker build . -t model-training`
+4. Run the docker image. Each run of this step uses a fresh environment,
+   so make a new model, update `config.kdl` (step #), and run this step again.
+    1. Create a configuration file:
+        1. `cp download-dataset/config.kdl.example config.kdl`
+        2. Edit `config.kdl` and set your configuration.
+    2. `./run-in-docker.sh`
+5. Upload model to PhotonVision
+    * `output/output/best-640-640-yolov8n.rknn`
+    * `best-640-640-yolov8n-labels.txt`
+
+## Detailed instructions if not using Docker
+
+These instructions are for going step-by-step.
+They are intended for development of this package;
+for actually training models the instructions above that use Docker are recommended.
+
+Each of many steps (e.g.: downloading models, training models, converting models) requires
+different libraries which may have different dependencies, so they are all managed separately
+(via `uv` or `pipenv`). People have tried to do this with Jupyter Notebooks, but it is very
+hard to make that reproducible.
+
+1. Create a model in Roboflow
+    1. TODO
+2. Set up computer to train model
     1. Install python 3.11
-    2. Install pipenv
-    3. Enable ROCM (for AMD GPUs)
+    2. Install [uv](https://docs.astral.sh/uv/getting-started/installation/)
+    3. Install pipenv (still required, but working on switching everything to `uv`)
+    4. Enable ROCM (for AMD GPUs)
         1. Install `amdgpu` per https://rocm.docs.amd.com/projects/install-on-linux/en/latest/install/amdgpu-install.html
         2. sudo amdgpu-install --usecase=hiplibsdk,rocm
         3. reboot
@@ -71,6 +93,7 @@ Tested running the model on an Orange Pi 5 Plus, using the official Debian image
     3. `sudo cp librknnrt.so /usr/lib/` (only do this one time per Orange Pi)
         * `librknnrt.so` is from https://github.com/airockchip/rknn-toolkit2/blob/master/rknpu2/runtime/Linux/librknn_api/aarch64/librknnrt.so
     4. `pipenv run yolo predict model=../export-rknn/best_rknn_model source=0`
+        * Tested on an Orange Pi 5 Plus, using the Debian Bookworm image.
 8. Export to RKNN with quantization so it can run in Photonvision.
     1. Export to modified ONNX (This step relies on a fork of ultralytics, and does not have a version lock file, so this may break in the future. Good luck!)
         1. `pushd export-onnx`
