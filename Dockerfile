@@ -44,5 +44,5 @@ RUN uv sync
 
 # setup to run
 WORKDIR /work
-COPY run.sh /work/run.sh
+COPY run.sh /work/docker/run.sh
 CMD ["/work/run.sh"]

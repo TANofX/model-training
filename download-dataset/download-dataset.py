@@ -16,7 +16,7 @@ rf = Roboflow(api_key=api_key)
 rf_workspace = rf.workspace(workspace)
 rf_project = rf_workspace.project(project)
 rf_version = rf_project.version(version)
-output_dir = '../dataset'
+output_dir = '../work/dataset'
 rf_version.download("yolov8", output_dir)
 
 print(f'downloaded dataset {rf_project.name}/{version} to {output_dir}')

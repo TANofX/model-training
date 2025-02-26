@@ -1,5 +1,0 @@
-output/
-*.pt
-
-# Why does Ultralytics put Arial.ttf into its config dir?!
-yolo-config/Arial.ttf

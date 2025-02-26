@@ -10,7 +10,7 @@ Tested running the model on an Orange Pi 5 Plus, using the image from PhotonVisi
 This project is still undergoing rapid development. Things that will hopefully change soon:
 
 * More configuration of training parameters in `config.kdl`
-* Customize name of model instead of using `best`.
+* Customize name of model instead of using `best` and generate matching labels file.
 * Completely stop using `pipenv`.
 * Instructions for creating a model in Roboflow.
 * Instructions for using a model not from Roboflow.
@@ -68,7 +68,7 @@ hard to make that reproducible.
 3. Set configuration.
     1. `cp config.kdl.example config.kdl`
     2. Edit `config.kdl` and set your configuration.
-4. Download dataset from Roboflow to `./dataset`.
+4. Download dataset from Roboflow to `work/dataset/`.
     1. `push download-dataset`
     2. Install the dependencies for the download script:
         1. `uv sync`
@@ -79,8 +79,7 @@ hard to make that reproducible.
     1. `pushd train`
     2. `uv sync`
     3. `uv run ./train.sh`
-    4. `cp output/train/weights/best.pt ..`
-        * This is the generated model.
+        * Should create work/best.pt (this is the generated model).
     5. `popd`
 6. Run object detection on computer
     1. `pushd run-cpu`
@@ -115,19 +114,18 @@ hard to make that reproducible.
         6. `git checkout 4674fe6e` (`origin/main` at time of writing)
         7. `pip install -e .`
             * This is probably not 100% reproducible.
-        8. `popd ..`
+        8. `popd`
         9. `pip install onnx==1.17.0`
-        10. `yolo mode=export format=rknn model=../best.pt`
-            * This has `format=rknn` even though it is creating ONNX. See the ulralytics fork diff for details.
-            * Should have generated `../../best.onnx`
+        10. `./export.sh`
+            * Should have generated `../work/best.onnx`
         11. `deactivate`
         12. `popd`
     2. Convert ONNX to RKNN with quantization
         1. `pushd onnx-to-rknn`
         2. `./gen-quant-images-txt.sh`
-        3. `pipenv sync`
-        4. `pipenv run python3 convert.py`
-            * Should have generated `../best-640-640-yolov8n.rknn`
+        3. `uv sync`
+        4. `uv run convert.py`
+            * Should have generated `../work/best-640-640-yolov8n.rknn`
 
 ## References
 

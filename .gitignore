@@ -1,6 +1,6 @@
-dataset/
+work/
 config.kdl
-*.pt
-*.onnx
-*.rknn
-best_rknn_model/
+output/
+
+# Why does Ultralytics put Arial.ttf into its config dir?!
+yolo-config/Arial.ttf

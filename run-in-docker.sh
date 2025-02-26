@@ -6,7 +6,7 @@ docker run \
 	--rm \
 	--device /dev/kfd --device /dev/dri --security-opt=seccomp=unconfined \
 	--shm-size=2gb \
-	-v ./config.kdl:/work/download-dataset/config.kdl \
+	-v ./config.kdl:/work/config.kdl \
 	-v ./output:/output \
 	mtu
 

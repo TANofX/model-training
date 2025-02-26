@@ -5,11 +5,11 @@ from rknn.api import RKNN
 
 # args: ../best.onnx rk3588 i8 ../best.rknn
 
-model_path = '../best.onnx'
+model_path = '../work/best.onnx'
 platform = 'rk3588'
 do_quant = True
-output_path = '../best-640-640-yolov8n.rknn'
-dataset_path = 'quant-images.txt'
+output_path = '../work/best-640-640-yolov8n.rknn'
+dataset_path = '../work/quant-images.txt'
 
 rknn = RKNN(verbose=True)
 
