@@ -2,9 +2,9 @@ from roboflow import Roboflow
 import kdl
 
 # read config file
-with open('config.kdl', 'r', encoding="utf-8") as f:
+with open('../config.kdl', 'r', encoding="utf-8") as f:
     configKdl = f.read()
-config = kdl.parse(configKdl)
+config = kdl.parse(configKdl)["roboflow"]
 api_key = config["api-key"].args[0]
 workspace = config["workspace"].args[0]
 project = config["project"].args[0]
