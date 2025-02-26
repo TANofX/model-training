@@ -61,8 +61,8 @@ hard to make that reproducible.
         3. reboot
         4. Verify Torch can use ROCM
             1. `pushd verify-rocm`
-            2. `pipenv sync`
-            3. `pipenv run python3 verify-rocm.py`
+            2. `uv sync`
+            3. `uv run verify-rocm.py`
                 * Should output "ROCM is available".
             4. `popd`
 3. Download dataset from Roboflow to `./dataset`.
@@ -71,14 +71,14 @@ hard to make that reproducible.
         1. `cp config.kdl.example config.kdl`
         2. Edit `config.kdl` and set your values.
     3. Install the dependencies for the download script:
-        1. `pipenv sync`
+        1. `uv sync`
     4. Run the download script:
-        1. `pipenv run python3 download-dataset.py`
+        1. `uv run download-dataset.py`
     5. `popd`
 4. Train the model
     1. `pushd train`
-    2. `pipenv sync`
-    3. `pipenv run ./train.sh`
+    2. `uv sync`
+    3. `uv run ./train.sh`
     4. `cp output/train/weights/best.pt ..`
         * This is the generated model.
     5. `popd`
