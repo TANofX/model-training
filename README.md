@@ -105,21 +105,10 @@ hard to make that reproducible.
 9. Export to RKNN with quantization so it can run in Photonvision.
     1. Export to modified ONNX (This step relies on a fork of ultralytics, and does not have a version lock file, so this may break in the future. Good luck!)
         1. `pushd export-onnx`
-        2. `virtualenv venv`
-        3. `source venv/bin/activate` (This might be different if you do not use bash.)
-        4. `git clone https://github.com/airockchip/ultralytics_yolov8 ultralytics`
-            * This is the fork of ultralytics. We will at least go to a known working commit.
-            * We should probably use a git submodule for this.
-        5. `pushd ultralytics`
-        6. `git checkout 4674fe6e` (`origin/main` at time of writing)
-        7. `pip install -e .`
-            * This is probably not 100% reproducible.
-        8. `popd`
-        9. `pip install onnx==1.17.0`
-        10. `./export.sh`
+        2. `uv sync`
+            * This uses a fork of ultralytics. We will at least go to a known working commit.
+        3. `uv run ./export.sh`
             * Should have generated `../work/best.onnx`
-        11. `deactivate`
-        12. `popd`
     2. Convert ONNX to RKNN with quantization
         1. `pushd onnx-to-rknn`
         2. `./gen-quant-images-txt.sh`

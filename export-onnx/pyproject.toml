@@ -1,0 +1,12 @@
+[project]
+name = "export-onnx"
+version = "0.0.1"
+description = "export ONNX file"
+requires-python = ">=3.11"
+dependencies = [
+	"ultralytics",
+	"onnx==1.17.0"
+]
+
+[tool.uv.sources]
+ultralytics = { git = "https://github.com/airockchip/ultralytics_yolov8", rev = "4674fe6e003dfbc5f2250d3b39dd31faaf7a9877" }

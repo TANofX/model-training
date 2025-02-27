@@ -22,9 +22,7 @@ popd
 
 # Export to ONNX, output ./work/best.onnx
 pushd export-onnx
-source venv/bin/activate
-./export.sh
-deactivate
+uv run ./export.sh
 popd
 
 # Convert ONNX to RKNN, output ./work/best-640-640-yolov8n.rknn

@@ -25,24 +25,18 @@ WORKDIR /work/train
 RUN uv sync
 
 # install dependencies for export-onnx
-# TODO do this with uv
-RUN pip install virtualenv
-RUN mkdir /work/export-onnx && \
-	cd /work/export-onnx && \
-	virtualenv venv && \
-	. venv/bin/activate && \
-	git clone https://github.com/airockchip/ultralytics_yolov8 ultralytics && \
-	cd ultralytics && \
-	git checkout 4674fe6e && \
-	pip install -e . && \
-	pip install onnx==1.17.0
+COPY export-onnx /work/export-onnx
+WORKDIR /work/export-onnx
+RUN uv sync
 
 # install dependencies for onnx-to-rknn
 COPY onnx-to-rknn /work/onnx-to-rknn
 WORKDIR /work/onnx-to-rknn
 RUN uv sync
 
+COPY best-640-640-yolov8n-labels.txt /work
+
 # setup to run
 WORKDIR /work
-COPY run.sh /work/docker/run.sh
+COPY docker/run.sh /work/run.sh
 CMD ["/work/run.sh"]
