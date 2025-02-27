@@ -3,4 +3,4 @@ config.kdl
 output/
 
 # Why does Ultralytics put Arial.ttf into its config dir?!
-yolo-config/Arial.ttf
+train/yolo-config/Arial.ttf
