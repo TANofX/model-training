@@ -1,4 +1,5 @@
+import sys
 from ultralytics import YOLO
-model = YOLO("../work/best.pt")
-# May have to update source (camera)
-results = model(source=0, show=True, save=True)
+# Arguments: path_to_model camera_source_number
+model = YOLO(sys.argv[1])
+results = model(source=int(sys.argv[2]), show=True, save=True)

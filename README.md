@@ -7,114 +7,65 @@ Tested training a computer with an AMD Radeon RX 6600XT, using Debian Bookworm.
 
 Tested running the model on an Orange Pi 5 Plus, using the image from PhotonVision.
 
+Each of many steps (e.g.: downloading models, training models, converting models) requires
+different libraries which may have different dependencies, so they are all managed separately
+via [uv](https://docs.astral.sh/uv/getting-started/installation/).
+This is automated by the scripts provided here. Just follow the instructions below.
+People have tried to do this with Jupyter Notebooks, but it is very hard to make that reproducible.
+
 This project is still undergoing rapid development. Things that will hopefully change soon:
 
 * More configuration of training parameters in `config.kdl`
 * Customize name of model instead of using `best` and generate matching labels file.
-* Completely stop using `pipenv`.
 * Instructions for creating a model in Roboflow.
 * Instructions for using a model not from Roboflow.
+* Instructions for using CUDA on Nvidia cards.
+* Use GNU make.
+
+## Prerequisites
+
+1. Enable ROCM (for AMD GPUs)
+    1. Install `amdgpu` per https://rocm.docs.amd.com/projects/install-on-linux/en/latest/install/amdgpu-install.html
+        * For `amdgpu-install`'s `--usecase` argument, include at least `hiplibsdk` and `rocm`.
+    2. reboot
 
 ## Instructions
 
-1. Create a model in Roboflow
-    1. TODO
-2. Set up computer to train model
-    1. Install Docker.
-    2. Enable ROCM (for AMD GPUs)
-        1. Install `amdgpu` per https://rocm.docs.amd.com/projects/install-on-linux/en/latest/install/amdgpu-install.html
-            * For `amdgpu-install`'s `--usecase` argument, include at least `hiplibsdk` and `rocm`.
-        2. reboot
-3. Build the docker image. Warning: the docker image will be 50+ GB.
-    1. `docker build . -t model-training`
-4. Run the docker image.
-    1. Create a configuration file:
-        1. `cp config.kdl.example config.kdl`
-        2. Edit `config.kdl` and set your configuration.
-    2. `./run-in-docker.sh`
-        * Each run of this step uses a fresh environment, so make a new model,
-          update `config.kdl`, and run this step again.
+1. Install python 3.11+ and [uv](https://docs.astral.sh/uv/getting-started/installation/)
+2. Build a model in Roboflow
+3. Configure `config.kdl`
+    1. `cp config.kdl.example config.kdl`
+    2. edit `config.kdl`
+4. `run.sh`
+    * Generates `./work/best-640-640-yolov8n.rknn`
 5. Upload model to PhotonVision
-    * `output/output/best-640-640-yolov8n.rknn`
+    * `work/best-640-640-yolov8n.rknn`
     * `best-640-640-yolov8n-labels.txt`
 
-## Detailed instructions if not using Docker
+## Instructions using Docker
 
-These instructions are for going step-by-step.
-They are intended for development of this package;
-for actually training models the instructions above that use Docker are recommended.
-
-Each of many steps (e.g.: downloading models, training models, converting models) requires
-different libraries which may have different dependencies, so they are all managed separately
-(via `uv` or `pipenv`). People have tried to do this with Jupyter Notebooks, but it is very
-hard to make that reproducible.
-
-1. Create a model in Roboflow
-    1. TODO
-2. Set up computer to train model
-    1. Install python 3.11
-    2. Install [uv](https://docs.astral.sh/uv/getting-started/installation/)
-    3. Install pipenv (still required, but working on switching everything to `uv`)
-    4. Enable ROCM (for AMD GPUs)
-        1. Install `amdgpu` per https://rocm.docs.amd.com/projects/install-on-linux/en/latest/install/amdgpu-install.html
-        2. sudo amdgpu-install --usecase=hiplibsdk,rocm
-        3. reboot
-        4. Verify Torch can use ROCM
-            1. `pushd train`
-            2. `uv sync`
-            3. `uv run verify-rocm.py`
-                * Should output "ROCM is available".
-            4. `popd`
-3. Set configuration.
+1. Install docker
+2. Build a model in Roboflow
+3. Configure `config.kdl`
     1. `cp config.kdl.example config.kdl`
-    2. Edit `config.kdl` and set your configuration.
-4. Download dataset from Roboflow to `work/dataset/`.
-    1. `push download-dataset`
-    2. Install the dependencies for the download script:
-        1. `uv sync`
-    3. Run the download script:
-        1. `uv run download-dataset.py`
-    4. `popd`
-5. Train the model
-    1. `pushd train`
-    2. `uv sync`
-    3. `uv run ./train.sh`
-        * Should create work/best.pt (this is the generated model).
-    5. `popd`
-6. Run object detection on computer
-    1. `pushd run-cpu`
-    2. `pipenv sync`
-    3. `pipenv run python3 run.py`
-        * On Wayland, you may need to run `pipenv run env QT_QPA_PLATFORM=xcb python3 run.py`
-        * In `run.py`, `source=0` means use the first camera. Change `0` to use a different camera.
-7. export to RKNN without quantization
-    (This will *not* run in PhotonVision. Skip to step 8 if you want to use PhotonVision.)
-    1. `pushd export-rknn`
-    2. `pipenv sync`
-    3. `pipenv run yolo export model=../best.pt format=rknn name=rk3588`
-    4. `mv best-rk3588.rknn best_rknn_model/`
-    5. `mv best_rknn_model ../run-rknn/`
-    6. `popd`
-8. run non-quantized on RKNN device (e.g.: Orange Pi 5 Plus)
-    1. http://www.orangepi.org/html/hardWare/computerAndMicrocontrollers/service-and-support/Orange-Pi-5-plus.html
-    2. `pushd run-rknn`
-    3. `sudo cp librknnrt.so /usr/lib/` (only do this one time per Orange Pi)
-        * `librknnrt.so` is from https://github.com/airockchip/rknn-toolkit2/blob/master/rknpu2/runtime/Linux/librknn_api/aarch64/librknnrt.so
-    4. `pipenv run yolo predict model=../export-rknn/best_rknn_model source=0`
-        * Tested on an Orange Pi 5 Plus, using the Debian Bookworm image.
-9. Export to RKNN with quantization so it can run in Photonvision.
-    1. Export to modified ONNX (This step relies on a fork of ultralytics, and does not have a version lock file, so this may break in the future. Good luck!)
-        1. `pushd export-onnx`
-        2. `uv sync`
-            * This uses a fork of ultralytics. We will at least go to a known working commit.
-        3. `uv run ./export.sh`
-            * Should have generated `../work/best.onnx`
-    2. Convert ONNX to RKNN with quantization
-        1. `pushd onnx-to-rknn`
-        2. `./gen-quant-images-txt.sh`
-        3. `uv sync`
-        4. `uv run convert.py`
-            * Should have generated `../work/best-640-640-yolov8n.rknn`
+    2. edit `config.kdl`
+4. Build the docker image. Warning: the docker image will be 50+ GB.
+    1. `docker build . -t model-training`
+5. Run the docker image.
+    1. `./run-in-docker.sh`
+        * Each run of this step uses a fresh environment, so make a new model,
+          update `config.kdl`, and run this step again.
+6. Upload model to PhotonVision
+    * `output/best-640-640-yolov8n.rknn`
+    * `best-640-640-yolov8n-labels.txt`
+
+## Run a model on a computer without an NPU
+
+1. `cd run-cpu`
+2. `uv sync`
+3. `uv run run.py <path_to_model.pt> <camera_num>`
+    * E.g.: if you ran `run.sh` above to build the model and you have one camera:
+      `uv run run.py ../work/best.pt 0`
 
 ## References
 
