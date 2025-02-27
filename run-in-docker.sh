@@ -8,6 +8,6 @@ docker run \
 	--shm-size=2gb \
 	-v ./config.kdl:/work/config.kdl \
 	-v ./output:/output \
-	mtu
+	model-training:latest
 
 echo "Generated ./output/best-640-640-yolov8n.rknn"

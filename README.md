@@ -49,7 +49,7 @@ This project is still undergoing rapid development. Things that will hopefully c
 3. Configure `config.kdl`
     1. `cp config.kdl.example config.kdl`
     2. edit `config.kdl`
-4. Build the docker image. Warning: the docker image will be 50+ GB.
+4. Build the docker image. Warning: the docker image will be 30+ GB.
     1. `docker build . -t model-training`
 5. Run the docker image.
     1. `./run-in-docker.sh`
