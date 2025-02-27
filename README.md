@@ -60,7 +60,7 @@ hard to make that reproducible.
         2. sudo amdgpu-install --usecase=hiplibsdk,rocm
         3. reboot
         4. Verify Torch can use ROCM
-            1. `pushd verify-rocm`
+            1. `pushd train`
             2. `uv sync`
             3. `uv run verify-rocm.py`
                 * Should output "ROCM is available".

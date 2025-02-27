@@ -9,11 +9,6 @@ RUN apt-get update && \
 # Install uv, which is used for Python dependencies
 RUN pip install uv
 
-# install dependencies for verify-rocm
-ADD verify-rocm /work/verify-rocm
-WORKDIR /work/verify-rocm
-RUN uv sync
-
 # install dependencies for download-dataset
 COPY download-dataset /work/download-dataset
 WORKDIR /work/download-dataset

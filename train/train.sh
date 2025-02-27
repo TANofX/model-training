@@ -1,6 +1,8 @@
 #!/bin/sh
 export HSA_OVERRIDE_GFX_VERSION=10.3.0
 
+python3 ./verify-rocm.py
+
 # Ultralytics, by default, writes settings to ~/.config/Ultralytics,
 # which is terrible because there are model-specific file paths in there.
 # So we will use ./yolo-config for our config files

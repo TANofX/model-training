@@ -5,11 +5,6 @@
 
 set -ex
 
-# Verify that ROCM is supported
-pushd verify-rocm
-uv run verify-rocm.py
-popd
-
 # Download the dataset from Roboflow to ./work/dataset/
 pushd download-dataset
 uv run download-dataset.py
