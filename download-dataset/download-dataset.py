@@ -1,5 +1,6 @@
 from roboflow import Roboflow
 import kdl
+import yaml
 
 # read config file
 with open('../config.kdl', 'r', encoding="utf-8") as f:
@@ -20,3 +21,14 @@ output_dir = '../work/dataset'
 rf_version.download("yolov8", output_dir)
 
 print(f'downloaded dataset {rf_project.name}/{version} to {output_dir}')
+
+# Generate labels file
+with open('../work/dataset/data.yaml') as f:
+    dataYaml = f.read()
+data = yaml.safe_load(dataYaml)
+labels_file = '../work/best-640-640-yolov8n-labels.txt'
+with open(labels_file, 'w', encoding='utf-8') as f:
+    for name in data['names']:
+        f.write(name)
+        f.write('\n')
+print(f'wrote labels file: {labels_file}')

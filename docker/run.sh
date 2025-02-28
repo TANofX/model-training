@@ -27,5 +27,5 @@ uv run convert.py
 popd
 
 # Copy output files for PhotonVision to /output/
-cp best-640-640-yolov8n-labels.txt /output/
+cp work/best-640-640-yolov8n-labels.txt /output/
 cp work/best-640-640-yolov8n.rknn /output/

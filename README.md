@@ -57,7 +57,7 @@ This project is still undergoing rapid development. Things that will hopefully c
           update `config.kdl`, and run this step again.
 6. Upload model to PhotonVision
     * `output/best-640-640-yolov8n.rknn`
-    * `best-640-640-yolov8n-labels.txt`
+    * `output/best-640-640-yolov8n-labels.txt`
 
 ## Run a model on a computer without an NPU
 
