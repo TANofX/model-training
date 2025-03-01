@@ -15,12 +15,10 @@ People have tried to do this with Jupyter Notebooks, but it is very hard to make
 
 This project is still undergoing rapid development. Things that will hopefully change soon:
 
-* More configuration of training parameters in `config.kdl`
 * Customize name of model instead of using `best` and generate matching labels file.
 * Instructions for creating a model in Roboflow.
 * Instructions for using a model not from Roboflow.
 * Instructions for using CUDA on Nvidia cards.
-* Use GNU make.
 
 ## Prerequisites
 
