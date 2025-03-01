@@ -1,6 +1,9 @@
 #!/bin/sh
 export HSA_OVERRIDE_GFX_VERSION=10.3.0
 
+set -ex
+
+# Verify ROCM is working
 python3 ./verify-rocm.py
 
 # Ultralytics, by default, writes settings to ~/.config/Ultralytics,
@@ -11,13 +14,8 @@ export YOLO_CONFIG_DIR=yolo-config
 mkdir -p ../work/tmp
 rm -rf ../work/tmp/train
 
-set -ex
-yolo detect train \
-	data=../work/dataset/data.yaml \
-	model=yolov8n.yaml \
-	project=../work/tmp \
-	epochs=2 \
-	imgsz=640
+# Run the training
+python3 ./train.py
 
 # Move the output file
 mv ../work/tmp/train/weights/best.pt ../work/

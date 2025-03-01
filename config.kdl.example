@@ -4,3 +4,9 @@ roboflow {
 	project "frc-coral-lekrc"
 	version 3
 }
+
+train {
+	model "yolov8n.yaml"
+	imgsz 640
+	epochs 10
+}

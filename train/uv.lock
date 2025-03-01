@@ -211,6 +211,15 @@ wheels = [
 ]
 
 [[package]]
+name = "kdl-py"
+version = "1.2.0"
+source = { registry = "https://pypi.org/simple" }
+sdist = { url = "https://files.pythonhosted.org/packages/a4/35/caa43d276dd46efe73926e25024429fab25effca24ba0af3875ea5cdc362/kdl-py-1.2.0.tar.gz", hash = "sha256:63f3f46c6277dedadce44dcfc94672bf6e6bf3330b90122e0134c22857e29973", size = 29224 }
+wheels = [
+    { url = "https://files.pythonhosted.org/packages/b7/04/766286ba77621edf37225c66ce0ef2bceead987c69439b572e85ad27980c/kdl_py-1.2.0-py3-none-any.whl", hash = "sha256:d11e556dbb226cccf666bb4ffe17c73e9d5bb08d29976649fa9292bac973d3e2", size = 23665 },
+]
+
+[[package]]
 name = "kiwisolver"
 version = "1.4.8"
 source = { registry = "https://pypi.org/simple" }
@@ -776,6 +785,7 @@ name = "train"
 version = "0.0.1"
 source = { virtual = "." }
 dependencies = [
+    { name = "kdl-py" },
     { name = "numpy" },
     { name = "pytorch-triton-rocm" },
     { name = "torch" },
@@ -786,6 +796,7 @@ dependencies = [
 
 [package.metadata]
 requires-dist = [
+    { name = "kdl-py" },
     { name = "numpy", index = "https://download.pytorch.org/whl/rocm6.2.4" },
     { name = "pytorch-triton-rocm", index = "https://download.pytorch.org/whl/rocm6.2.4" },
     { name = "torch", specifier = "==2.6.0+rocm6.2.4", index = "https://download.pytorch.org/whl/rocm6.2.4" },

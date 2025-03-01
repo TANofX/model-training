@@ -9,7 +9,8 @@ dependencies = [
 	"torchvision",
 	"pytorch-triton-rocm",
 	"tqdm",
-	"numpy"
+	"numpy",
+	"kdl-py"
 ]
 
 [tool.uv.sources]
