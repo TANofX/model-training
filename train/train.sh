@@ -1,26 +1,33 @@
 #!/bin/sh
+
+# This script sets up the environment and then calls train.py
+
+# Needed for RX 6600 XT
+# TODO: make this configurable
 export HSA_OVERRIDE_GFX_VERSION=10.3.0
 
-set -ex
+# Python developers seem to be uniformly bad at handling file paths.
+# This is either the result of or the cause of Python introducing a new
+# path handling API every other minor version.
 
-# Verify ROCM is working
-python3 ./verify-rocm.py
+# The data.yaml that we get from Roboflow assumes paths are relative
+# to the parent directory of data.yaml.
 
 # Ultralytics, by default, writes settings to ~/.config/Ultralytics,
 # which is terrible because there are model-specific file paths in there.
-# So we will use ./yolo-config for our config files
-export YOLO_CONFIG_DIR=yolo-config
 
-mkdir -p ../work/tmp
-rm -rf ../work/tmp/train
+# So we can make a temp dir for train.py to run in, and make a config dir there.
+
+# Save absolute path to train.py
+TRAIN_PY=$(readlink -f $(dirname "$0"))/train.py
+
+BASE_DIR=$(readlink -f $(dirname $0)/..)
+RUN_DIR="${BASE_DIR}/work/tmp/train"
+rm -rf "${RUN_DIR}"
+mkdir -p "${RUN_DIR}"
+cd "${RUN_DIR}"
+export YOLO_CONFIG_DIR=yolo-config
+mkdir "${YOLO_CONFIG_DIR}"
 
 # Run the training
-python3 ./train.py
-
-# Move the output file
-mv ../work/tmp/train/weights/best.pt ../work/
-
-# Remove files that yolo leaves around
-rm -rf yolo-config/Arial.ttf yolo11n.pt ../work/tmp/train
-
-echo "Training complete"
+python3 "${TRAIN_PY}"

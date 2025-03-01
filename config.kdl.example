@@ -1,12 +1,15 @@
+name "frc-coral-3"
+imgsz 640
+model "yolov8n"
+
 roboflow {
 	api-key "YOUR_API_KEY"
 	workspace "robot2-3swmu"
 	project "frc-coral-lekrc"
+	model "yolov8"
 	version 3
 }
 
 train {
-	model "yolov8n.yaml"
-	imgsz 640
 	epochs 10
 }

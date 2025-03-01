@@ -141,12 +141,14 @@ name = "export-onnx"
 version = "0.0.1"
 source = { virtual = "." }
 dependencies = [
+    { name = "kdl-py" },
     { name = "onnx" },
     { name = "ultralytics" },
 ]
 
 [package.metadata]
 requires-dist = [
+    { name = "kdl-py" },
     { name = "onnx", specifier = "==1.17.0" },
     { name = "ultralytics", git = "https://github.com/airockchip/ultralytics_yolov8?rev=4674fe6e003dfbc5f2250d3b39dd31faaf7a9877" },
 ]
@@ -221,6 +223,15 @@ dependencies = [
 sdist = { url = "https://files.pythonhosted.org/packages/af/92/b3130cbbf5591acf9ade8708c365f3238046ac7cb8ccba6e81abccb0ccff/jinja2-3.1.5.tar.gz", hash = "sha256:8fefff8dc3034e27bb80d67c671eb8a9bc424c0ef4c0826edbff304cceff43bb", size = 244674 }
 wheels = [
     { url = "https://files.pythonhosted.org/packages/bd/0f/2ba5fbcd631e3e88689309dbe978c5769e883e4b84ebfe7da30b43275c5a/jinja2-3.1.5-py3-none-any.whl", hash = "sha256:aba0f4dc9ed8013c424088f68a5c226f7d6097ed89b246d7749c2ec4175c6adb", size = 134596 },
+]
+
+[[package]]
+name = "kdl-py"
+version = "1.2.0"
+source = { registry = "https://pypi.org/simple" }
+sdist = { url = "https://files.pythonhosted.org/packages/a4/35/caa43d276dd46efe73926e25024429fab25effca24ba0af3875ea5cdc362/kdl-py-1.2.0.tar.gz", hash = "sha256:63f3f46c6277dedadce44dcfc94672bf6e6bf3330b90122e0134c22857e29973", size = 29224 }
+wheels = [
+    { url = "https://files.pythonhosted.org/packages/b7/04/766286ba77621edf37225c66ce0ef2bceead987c69439b572e85ad27980c/kdl_py-1.2.0-py3-none-any.whl", hash = "sha256:d11e556dbb226cccf666bb4ffe17c73e9d5bb08d29976649fa9292bac973d3e2", size = 23665 },
 ]
 
 [[package]]

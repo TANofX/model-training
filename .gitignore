@@ -1,6 +1,3 @@
 work/
 config.kdl
 output/
-
-# Why does Ultralytics put Arial.ttf into its config dir?!
-train/yolo-config/Arial.ttf

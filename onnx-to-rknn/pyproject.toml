@@ -8,5 +8,6 @@ dependencies = [
 	"onnx==1.14.1",
 	"rknn-toolkit2==2.3.0",
 	"torch==2.2.0",
-	"setuptools"
+	"setuptools",
+	"kdl-py"
 ]
