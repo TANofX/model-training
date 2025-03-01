@@ -64,6 +64,7 @@ This project is still undergoing rapid development. Things that will hopefully c
 3. `uv run run.py <path_to_model.pt> <camera_num>`
     * E.g.: if you ran `run.sh` above to build the model and you have one camera:
       `uv run run.py ../work/best.pt 0`
+    * If running on Wayland, you man need to set `$QT_QPA_PLATFORM` to `xcb`.
 
 ## References
 
